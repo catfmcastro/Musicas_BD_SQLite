@@ -1,0 +1,20 @@
+-- CREATE TABLE
+--     musicas (
+--         id INTEGER PRIMARY KEY AUTOINCREMENT,
+--         titulo STRING NOT NULL,
+--         duracao INTEGER NOT NULL,
+--         artista STRING NOT NULL,
+--         album STRING,
+--         compositor STRING,
+--         data DATETIME DEFAULT CURRENT_TIMESTAMP
+--     );
+-- INSERT INTO
+--     musicas (titulo, duracao, artista, album, compositor)
+-- VALUES
+--     (
+--         'musica 1',
+--         120,
+--         'artista 1',
+--         'album 1',
+--         'compositor 1'
+--     )
