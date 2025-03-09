@@ -64,7 +64,6 @@ public class App {
             tmp = new Musica(titulo, artista, album, "", duracao);
         }
 
-
         sc.close();
         return tmp;
     }
@@ -81,7 +80,19 @@ public class App {
         }
     }
 
-    public static void listarMusicas (Statement statement) {
+    
+    public int validarInput() {
+        Scanner sc = new Scanner(System.in);
+        int input = sc.nextInt();
+        while (input < 1 || input > 3) {
+            System.out.println("Opção inválida! Tente novamente.");
+            input = sc.nextInt();
+        }
+        sc.close();
+        return input;
+    }
+
+    public void listarMusicas(Statement statement) {
         try {
             ResultSet rs = statement.executeQuery("SELECT * FROM musicas");
             while (rs.next()) {
@@ -100,6 +111,8 @@ public class App {
 
     public static void main(String[] args) {
         Connection connection = null;
+        Scanner sc = new Scanner(System.in);
+        App app = new App();
 
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:musicas.db");
@@ -118,8 +131,27 @@ public class App {
             // "INSERT INTO musicas (titulo, duracao, artista, album, compositor) VALUES
             // ('musica 1', 120, 'artista 1', 'album 1', 'compositor 1')");
 
-            listarMusicas(statement);
+            System.out.println("O que deseja fazer?");
+            System.out.println("1. Cadastrar música");
+            System.out.println("2. Listar músicas");
+            System.out.println("3. Sair");
 
+            int input = app.validarInput();
+
+            switch (input) {
+                case 1:
+                    
+                    break;
+                case 2:
+                    app.listarMusicas(statement);
+                    input = app.validarInput();
+                    break;
+
+                default:
+                    break;
+            }
+
+            sc.close();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
@@ -129,6 +161,7 @@ public class App {
                 if (connection != null) {
                     connection.close();
                 }
+                sc.close();
             } catch (SQLException e) {
                 // Falhou também para fechar o arquivo
                 System.err.println(e.getMessage());
