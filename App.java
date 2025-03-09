@@ -38,7 +38,31 @@ class Musica {
 }
 
 public class App {
-    public Musica inputMusica(Scanner sc) {
+    // listar todas as músicas do banco
+    public void listarMusicas(Statement statement) {
+        try {
+            System.out.println();
+            System.out.println();
+            System.out.println("Listando músicas...");
+            System.out.println();
+            ResultSet rs = statement.executeQuery("SELECT * FROM musicas");
+            while (rs.next()) {
+                System.out.println("Título: " + rs.getString("titulo"));
+                System.out.println("Duração: " + rs.getInt("duracao"));
+                System.out.println("Artista: " + rs.getString("artista"));
+                System.out.println("Album: " + rs.getString("album"));
+                System.out.println("Compositor: " + rs.getString("compositor"));
+                System.out.println("Data: " + rs.getString("data"));
+                System.out.println("Id: " + rs.getInt("id"));
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    // input de dados de uma música
+    public Musica inserirMusica(Scanner sc) {
         Musica tmp;
         String titulo, artista, album, compositor;
         int duracao;
@@ -69,12 +93,14 @@ public class App {
         return tmp;
     }
 
+    // cadastro de música no banco
     public void cadastrarMusica(Statement statement, Scanner sc) {
-        Musica musica = inputMusica(sc);
+        Musica musica = inserirMusica(sc);
         try {
             statement.executeUpdate(
                     "INSERT INTO musicas (titulo, duracao, artista, album, compositor) VALUES ('"
-                            + musica.getTitulo() + "', " + musica.getDuracao() + ", '" + musica.getArtista() + "', '"
+                            + musica.getTitulo() + "', " + musica.getDuracao() + ", '" + musica.getArtista()
+                            + "', '"
                             + musica.getAlbum() + "', '" + musica.getCompositor() + "')");
 
         } catch (SQLException e) {
@@ -82,7 +108,56 @@ public class App {
         }
     }
 
-    public int inputOpcao(Scanner sc) {
+    // todo atualizar dados de uma música por id
+
+    // todo apagar música por id
+    public void apagarMusica(Statement statement, Scanner sc) {
+        int id;
+
+        System.out.println("Insira o ID da música que deseja apagar: ");
+        id = sc.nextInt();
+        sc.nextLine();
+
+        try {
+            statement.executeUpdate("DELETE FROM musicas WHERE id = " + id);
+            System.out.println("Música apagada com sucesso!");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+    }
+
+    // buscar música por id
+    public void buscarMusica(Statement statement, Scanner sc) {
+        int id;
+
+        System.out.println("Insira o ID da música que deseja buscar: ");
+        id = sc.nextInt();
+        sc.nextLine();
+
+        try {
+            ResultSet rs = statement.executeQuery("SELECT * FROM musicas WHERE id = " + id);
+
+            if (rs.next()) {
+                System.out.println();
+                System.out.println("Título: " + rs.getString("titulo"));
+                System.out.println("Duração: " + rs.getInt("duracao"));
+                System.out.println("Artista: " + rs.getString("artista"));
+                System.out.println("Album: " + rs.getString("album"));
+                System.out.println("Compositor: " + rs.getString("compositor"));
+                System.out.println("Data: " + rs.getString("data"));
+                System.out.println("Id: " + rs.getInt("id"));
+                System.out.println();
+            } else {
+                System.out.println("Nenhuma música encontrada com o ID: " + id);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    // seleção de opção do menu
+    public int selecionarOpcao(Scanner sc) {
         int input = 0;
         boolean valid = false;
 
@@ -90,12 +165,14 @@ public class App {
             System.out.println("O que deseja fazer?");
             System.out.println("1. Cadastrar música");
             System.out.println("2. Listar músicas");
-            System.out.println("3. Sair");
+            System.out.println("3. Buscar música por ID");
+            System.out.println("4. Apagar música por ID");
+            System.out.println("5. Sair");
             sc.hasNext();
 
             if (sc.hasNextInt()) {
                 input = sc.nextInt();
-                if (input >= 1 && input <= 3) {
+                if (input >= 1 && input <= 4) {
                     valid = true;
                 } else {
                     System.out.println("Opção inválida! Tente novamente.");
@@ -107,28 +184,6 @@ public class App {
         }
 
         return input;
-    }
-
-    public void listarMusicas(Statement statement) {
-        try {
-            System.out.println();
-            System.out.println();
-            System.out.println("Listando músicas...");
-            System.out.println();
-            ResultSet rs = statement.executeQuery("SELECT * FROM musicas");
-            while (rs.next()) {
-                System.out.println("Título: " + rs.getString("titulo"));
-                System.out.println("Duração: " + rs.getInt("duracao"));
-                System.out.println("Artista: " + rs.getString("artista"));
-                System.out.println("Album: " + rs.getString("album"));
-                System.out.println("Compositor: " + rs.getString("compositor"));
-                System.out.println("Data: " + rs.getString("data"));
-                System.out.println("Id: " + rs.getInt("id"));
-                System.out.println();
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
     }
 
     public static void main(String[] args) {
@@ -156,7 +211,7 @@ public class App {
             int input;
 
             do {
-                input = app.inputOpcao(sc);
+                input = app.selecionarOpcao(sc);
 
                 switch (input) {
                     case 1:
@@ -166,12 +221,18 @@ public class App {
                         app.listarMusicas(statement);
                         break;
                     case 3:
+                        app.buscarMusica(statement, sc);
+                        break;
+                    case 4:
+                        app.apagarMusica(statement, sc);
+                        break;
+                    case 5:
                         System.out.println("Até mais!");
                         break;
                     default:
                         break;
                 }
-            } while (input != 3);
+            } while (input != 5);
 
             sc.close();
         } catch (SQLException e) {
