@@ -1,5 +1,3 @@
-package Musicas_BD_SQLite;
-
 import java.sql.*;
 
 public class App {
