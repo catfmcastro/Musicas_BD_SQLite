@@ -241,41 +241,6 @@ public class App {
             System.out.println("====================== Biblioteca Virtual de Músicas =======================");
             System.out.println("\nSeja bem-vindo(a)!");
 
-            // ** código para criação da tabela
-            // statement.executeUpdate("DROP TABLE IF EXISTS musicas");
-            // statement.executeUpdate("CREATE TABLE musicas (id INTEGER PRIMARY KEY AUTOINCREMENT, titulo STRING NOT NULL, duracao INTEGER NOT NULL, artista STRING NOT NULL, album STRING, compositor STRING, data DATETIME DEFAULT CURRENT_TIMESTAMP)");
-            // statement.executeUpdate( "INSERT INTO\r\n" + //
-            //                     "    musicas (titulo, duracao, artista, album, compositor)\r\n" + //
-            //                     "VALUES\r\n" + //
-            //                     "    (\r\n" + //
-            //                     "        'Apesar de Você',\r\n" + //
-            //                     "        235,\r\n" + //
-            //                     "        'Chico Buarque',\r\n" + //
-            //                     "        'Chico Buarque',\r\n" + //
-            //                     "        'Chico Buarque'\r\n" + //
-            //                     "    ),\r\n" + //
-            //                     "    (\r\n" + //
-            //                     "        'Everything In Its Right Place',\r\n" + //
-            //                     "        251,\r\n" + //
-            //                     "        'Radiohead',\r\n" + //
-            //                     "        'Kid A',\r\n" + //
-            //                     "        'Colin Greenwood, Ed O''Brien, Jonny Greenwood, Philip Selway, Thom Yorke'\r\n" + //
-            //                     "    ),\r\n" + //
-            //                     "    (\r\n" + //
-            //                     "        'Paranoid Android',\r\n" + //
-            //                     "        387,\r\n" + //
-            //                     "        'Radiohead',\r\n" + //
-            //                     "        'OK Computer',\r\n" + //
-            //                     "        'Colin Greenwood, Ed O''Brien, Jonny Greenwood, Philip Selway, Thom Yorke'\r\n" + //
-            //                     "    ),\r\n" + //
-            //                     "    (\r\n" + //
-            //                     "        'Canoa, Canoa',\r\n" + //
-            //                     "        242,\r\n" + //
-            //                     "        'Milton Nascimento',\r\n" + //
-            //                     "        'Clube da Esquina',\r\n" + //
-            //                     "        'Nelson Angelo, Fernando Brant'\r\n" + //
-            //                     "    )");
-
             int input;
 
             do {
@@ -317,7 +282,6 @@ public class App {
                 }
                 sc.close();
             } catch (SQLException e) {
-                // Falhou também para fechar o arquivo
                 System.err.println(e.getMessage());
             }
         }
