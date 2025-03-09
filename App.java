@@ -38,37 +38,39 @@ class Musica {
 }
 
 public class App {
-    public Musica inserirMusica() {
-        Scanner sc = new Scanner(System.in);
+    public Musica inputMusica(Scanner sc) {
         Musica tmp;
+        String titulo, artista, album, compositor;
+        int duracao;
 
         System.out.println("Insira o título da música: ");
-        String titulo = sc.nextLine();
+        titulo = sc.nextLine();
 
         System.out.println("Insira o artista: ");
-        String artista = sc.nextLine();
+        artista = sc.nextLine();
 
         System.out.println("Insira o album: ");
-        String album = sc.nextLine();
+        album = sc.nextLine();
 
         System.out.println("Insira a duração da música: ");
-        int duracao = sc.nextInt();
+        duracao = sc.nextInt();
+        sc.nextLine();
 
         System.out.println("Essa música tem compositor? (s/n)");
         String resposta = sc.nextLine();
         if (resposta.equals("s")) {
             System.out.println("Insira o compositor: ");
-            String compositor = sc.nextLine();
+            compositor = sc.nextLine();
             tmp = new Musica(titulo, artista, album, compositor, duracao);
         } else {
             tmp = new Musica(titulo, artista, album, "", duracao);
         }
 
-        sc.close();
         return tmp;
     }
 
-    public void cadastrarMusica(Musica musica, Statement statement) {
+    public void cadastrarMusica(Statement statement, Scanner sc) {
+        Musica musica = inputMusica(sc);
         try {
             statement.executeUpdate(
                     "INSERT INTO musicas (titulo, duracao, artista, album, compositor) VALUES ('"
@@ -80,20 +82,39 @@ public class App {
         }
     }
 
-    
-    public int validarInput() {
-        Scanner sc = new Scanner(System.in);
-        int input = sc.nextInt();
-        while (input < 1 || input > 3) {
-            System.out.println("Opção inválida! Tente novamente.");
-            input = sc.nextInt();
+    public int inputOpcao(Scanner sc) {
+        int input = 0;
+        boolean valid = false;
+
+        while (!valid) {
+            System.out.println("O que deseja fazer?");
+            System.out.println("1. Cadastrar música");
+            System.out.println("2. Listar músicas");
+            System.out.println("3. Sair");
+            sc.hasNext();
+
+            if (sc.hasNextInt()) {
+                input = sc.nextInt();
+                if (input >= 1 && input <= 3) {
+                    valid = true;
+                } else {
+                    System.out.println("Opção inválida! Tente novamente.");
+                }
+            } else {
+                System.out.println("Entrada inválida! Por favor, insira um número.");
+                sc.next();
+            }
         }
-        sc.close();
+
         return input;
     }
 
     public void listarMusicas(Statement statement) {
         try {
+            System.out.println();
+            System.out.println();
+            System.out.println("Listando músicas...");
+            System.out.println();
             ResultSet rs = statement.executeQuery("SELECT * FROM musicas");
             while (rs.next()) {
                 System.out.println("Título: " + rs.getString("titulo"));
@@ -103,6 +124,7 @@ public class App {
                 System.out.println("Compositor: " + rs.getString("compositor"));
                 System.out.println("Data: " + rs.getString("data"));
                 System.out.println("Id: " + rs.getInt("id"));
+                System.out.println();
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -123,33 +145,33 @@ public class App {
 
             // * código para criação da tabela
             // statement.executeUpdate("DROP TABLE IF EXISTS musicas");
-            // statement.executeUpdate(
-            // "CREATE TABLE musicas (id INTEGER PRIMARY KEY AUTOINCREMENT, titulo STRING
-            // NOT NULL, duracao INTEGER NOT NULL, artista STRING NOT NULL, album STRING,
-            // compositor STRING, data DATETIME DEFAULT CURRENT_TIMESTAMP)");
-            // statement.executeUpdate(
-            // "INSERT INTO musicas (titulo, duracao, artista, album, compositor) VALUES
-            // ('musica 1', 120, 'artista 1', 'album 1', 'compositor 1')");
+            // statement.executeUpdate("CREATE TABLE musicas (id INTEGER PRIMARY KEY
+            // AUTOINCREMENT, titulo STRING NOT NULL, duracao INTEGER NOT NULL, artista
+            // STRING NOT NULL, album STRING, compositor STRING, data DATETIME DEFAULT
+            // CURRENT_TIMESTAMP)");
+            // statement.executeUpdate( "INSERT INTO musicas (titulo, duracao, artista,
+            // album, compositor) VALUES('musica 1', 120, 'artista 1', 'album 1',
+            // 'compositor 1')");
 
-            System.out.println("O que deseja fazer?");
-            System.out.println("1. Cadastrar música");
-            System.out.println("2. Listar músicas");
-            System.out.println("3. Sair");
+            int input;
 
-            int input = app.validarInput();
+            do {
+                input = app.inputOpcao(sc);
 
-            switch (input) {
-                case 1:
-                    
-                    break;
-                case 2:
-                    app.listarMusicas(statement);
-                    input = app.validarInput();
-                    break;
-
-                default:
-                    break;
-            }
+                switch (input) {
+                    case 1:
+                        app.cadastrarMusica(statement, sc);
+                        break;
+                    case 2:
+                        app.listarMusicas(statement);
+                        break;
+                    case 3:
+                        System.out.println("Até mais!");
+                        break;
+                    default:
+                        break;
+                }
+            } while (input != 3);
 
             sc.close();
         } catch (SQLException e) {
