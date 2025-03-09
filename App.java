@@ -109,8 +109,25 @@ public class App {
     }
 
     // todo atualizar dados de uma música por id
+    public void atualizarMusica(Statement statement, Scanner sc) {
+        int id;
 
-    // todo apagar música por id
+        System.out.println("Insira o ID da música que deseja atualizar: ");
+        id = sc.nextInt();
+        sc.nextLine();
+
+        Musica musica = inserirMusica(sc);
+
+        try {
+            statement.executeUpdate("UPDATE musicas SET titulo = '" + musica.getTitulo() + "', duracao = "
+                    + musica.getDuracao() + ", artista = '" + musica.getArtista() + "', album = '"
+                    + musica.getAlbum() + "', compositor = '" + musica.getCompositor() + "' WHERE id = " + id);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    // apagar música por id
     public void apagarMusica(Statement statement, Scanner sc) {
         int id;
 
@@ -172,7 +189,7 @@ public class App {
 
             if (sc.hasNextInt()) {
                 input = sc.nextInt();
-                if (input >= 1 && input <= 4) {
+                if (input >= 1 && input <= 6) {
                     valid = true;
                 } else {
                     System.out.println("Opção inválida! Tente novamente.");
@@ -227,12 +244,15 @@ public class App {
                         app.apagarMusica(statement, sc);
                         break;
                     case 5:
+                        app.atualizarMusica(statement, sc);
+                        break;
+                    case 6:
                         System.out.println("Até mais!");
                         break;
                     default:
                         break;
                 }
-            } while (input != 5);
+            } while (input != 6);
 
             sc.close();
         } catch (SQLException e) {
