@@ -9,34 +9,34 @@
 --         data DATETIME DEFAULT CURRENT_TIMESTAMP
 --     );
 --
-INSERT INTO
-    musicas (titulo, duracao, artista, album, compositor)
-VALUES
-    (
-        'Apesar de Você',
-        235,
-        'Chico Buarque',
-        'Chico Buarque',
-        'Chico Buarque'
-    ),
-    (
-        'Everything In Its Right Place',
-        251,
-        'Radiohead',
-        'Kid A',
-        'Colin Greenwood, Ed O''Brien, Jonny Greenwood, Philip Selway, Thom Yorke'
-    ),
-    (
-        'Paranoid Android',
-        387,
-        'Radiohead',
-        'OK Computer',
-        'Colin Greenwood, Ed O''Brien, Jonny Greenwood, Philip Selway, Thom Yorke'
-    ),
-    (
-        'Canoa, Canoa',
-        242,
-        'Milton Nascimento',
-        'Clube da Esquina',
-        'Nelson Angelo, Fernando Brant'
-    )
+-- INSERT INTO
+--     musicas (titulo, duracao, artista, album, compositor)
+-- VALUES
+--     (
+--         'Apesar de Você',
+--         235,
+--         'Chico Buarque',
+--         'Chico Buarque',
+--         'Chico Buarque'
+--     ),
+--     (
+--         'Everything In Its Right Place',
+--         251,
+--         'Radiohead',
+--         'Kid A',
+--         'Colin Greenwood, Ed O''Brien, Jonny Greenwood, Philip Selway, Thom Yorke'
+--     ),
+--     (
+--         'Paranoid Android',
+--         387,
+--         'Radiohead',
+--         'OK Computer',
+--         'Colin Greenwood, Ed O''Brien, Jonny Greenwood, Philip Selway, Thom Yorke'
+--     ),
+--     (
+--         'Canoa, Canoa',
+--         242,
+--         'Milton Nascimento',
+--         'Clube da Esquina',
+--         'Nelson Angelo, Fernando Brant'
+--     )
